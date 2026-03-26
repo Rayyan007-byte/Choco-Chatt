@@ -18,10 +18,12 @@ const {
   getMyRequest,
 } = require("../controllers/user.controller");
 const { authenticateToken } = require("../../middleware/auth");
+const multer = require("multer");
+const { singleAvatar } = require("../../middleware/multer");
 
 const router = require("express").Router();
 
-router.post("/sign-up", signUp);
+router.post("/sign-up", singleAvatar, signUp);
 
 router.post("/sign-in", signIn);
 

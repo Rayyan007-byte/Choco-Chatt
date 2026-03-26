@@ -69,6 +69,9 @@ const NewContact = () => {
       >
         <IoIosArrowRoundBack className="text-3xl" />
       </Link>
+      {
+        AllUsers && AllUsers.length > 0 ? (
+      
       <div className="absolute bg-white/5 rounded-lg p-4 shadow-lg w-full max-w-[28rem] sm:max-w-[24rem] h-[32rem] z-50 flex flex-col left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2">
         <h2 className="text-lg font-semibold mb-2 text-gray-200">New Contact</h2>
 
@@ -92,6 +95,12 @@ const NewContact = () => {
           ))}
         </div>
       </div>
+        ) : (
+          <div className="text-center text-gray-300 mt-4">
+      No other users available. Create another user to add new contacts!
+    </div>
+        )
+} 
     </>
   );
 };

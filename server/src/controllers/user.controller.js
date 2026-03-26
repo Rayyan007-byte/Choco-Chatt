@@ -1,24 +1,36 @@
 const User = require("../models/userModel");
 const Request = require("../models/requestModel");
 const jwt = require("jsonwebtoken");
-const { cookiesOption, emitEvent } = require("../utils/features");
+const { cookiesOption, emitEvent, uploadFilesToCloudinary } = require("../utils/features");
 const { NEW_REQUSET, REFETCH_CHATS } = require("../constants/events");
 const Chat = require("../models/chatModel");
 require("dotenv").config();
 
 // user Sign-up
 const signUp = async (req, res) => {
-  const { name, username, password, avatar } = req.body;
+  const { name, username, password, bio } = req.body;
+  const file = req.file;
+  console.log("filesss",file);
+  
+  if(!file) return res.status(300).json({ message: "Please Upload Avatar" });
+  const result = await uploadFilesToCloudinary([file]);
+  const avatar = {
+    public_id: result[0].public_id,
+    url: result[0].url
+  }
 
   try {
     const existingUser = await User.findOne({ username });
     if (existingUser)
       return res.status(400).json({ message: "User already exist" });
-    const newUser = new User({ name, username, password, avatar });
+    const newUser = new User({ name, username, password, bio, avatar });
     await newUser.save();
+    console.log(newUser);
     return res
       .status(200)
-      .json({ message: "User reistered successfully", newUser });
+      .json({ message: "User reistered successfully", newUser, result });
+      
+      
   } catch (error) {
     console.log(error);
 
@@ -29,9 +41,12 @@ const signUp = async (req, res) => {
 // signin
 const signIn = async (req, res) => {
   const { username, password } = req.body;
+  
 
   try {
-    const existingUser = await User.findOne({ username });
+    const existingUser = await User.findOne({ username }).select("+password");
+    console.log("existing",existingUser);
+    
     if (!existingUser)
       return res.status(400).json({ message: "Invalid Username" });
 

@@ -98,7 +98,7 @@ useEffect(() => {
               <div
                 className={`${
                   sameSender ? "items-end text-end" : "items-start text-start"
-                }max-w-[50%] w-fit pl-3 pr-3 py-2 rounded-lg my-0.5 bg-white/5 flex flex-col`}
+                } max-w-[50%] w-fit pl-3 pr-3 py-2 rounded-lg my-0.5 bg-white/5 flex flex-col`}
               >
                 <small className="font-semibold text-yellow-300">
                   { sameSender ? "" : oldMessage.sender?.name}
